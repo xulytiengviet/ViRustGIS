@@ -16,6 +16,8 @@ concurrency:
 
 jobs:
   build:
+    # The viRustGIS fork publishes the real WebAssembly map via virustgis-pages.yml.
+    if: github.repository == 'opengeos/RustGIS'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
