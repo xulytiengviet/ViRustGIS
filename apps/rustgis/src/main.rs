@@ -113,6 +113,23 @@ fn main() -> eframe::Result {
     if let Some((size, rgba)) = rustgis_engine::render::logo::rgba(256) {
         viewport = viewport.with_icon(egui::IconData { rgba, width: size, height: size });
     }
-    let options = eframe::NativeOptions { viewport, ..Default::default() };
+    // Intel Vulkan (igvk64.dll) on some Windows drivers can terminate the whole
+    // process with 0xc0000005. A Rust panic handler cannot recover from this.
+    // Default to OpenGL (glow) on Windows so Vulkan is never loaded at startup.
+    // Keep wgpu as an explicit opt-in for systems with tested GPU drivers.
+    // --gpu-glow forces the compatibility renderer on other desktop platforms.
+    let use_glow = cfg!(target_os = "windows")
+        && !args.iter().any(|a| a == "--gpu-wgpu");
+    let use_glow = use_glow || args.iter().any(|a| a == "--gpu-glow");
+    let renderer = if use_glow {
+        eframe::Renderer::Glow
+    } else {
+        eframe::Renderer::Wgpu
+    };
+    let options = eframe::NativeOptions {
+        viewport,
+        renderer,
+        ..Default::default()
+    };
     eframe::run_native("RustGIS", options, Box::new(move |_cc| Ok(Box::new(App(app)))))
 }
