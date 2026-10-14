@@ -189,7 +189,7 @@ fn tab_strip(app: &mut RustGisApp, ui: &mut Ui, t: &Tokens) {
         }
         ui.add_space(6.0);
         // RustGIS's tabs, then plugins' own tabs; the user can hide any of them.
-        let mut tabs: Vec<(String, String)> = TABS.iter().map(|t| (t.to_string(), tl!(*t).to_string())).collect();
+        let mut tabs: Vec<(String, String)> = TABS.iter().map(|t| (t.to_string(), if *t == "Assistant" { "Trợ lý AI".to_string() } else { tl!(*t).to_string() })).collect();
         tabs.extend(plugin_tabs(app));
         tabs.retain(|(id, _)| !app.ui.hidden_tabs.iter().any(|h| h == id));
         // The tabs scroll between the Project button and the right-side controls (the collapse
