@@ -156,8 +156,11 @@ pub fn install_fonts(
         let primary = region.is_some() && *region == current;
         for fam in [FontFamily::Proportional, FontFamily::Name("semibold".into())] {
             if let Some(v) = fonts.families.get_mut(&fam) {
-                if primary {
-                    // Right after the interface face, so its regional glyph shapes win.
+                if name.starts_with("web-NotoSans") && region.is_none() {
+                    // The web's Vietnamese-capable Noto Sans must take priority over
+                    // the platform-dependent embedded UI face, not just act as fallback.
+                    v.insert(0, name.clone());
+                } else if primary {
                     v.insert(1.min(v.len()), name.clone());
                 } else {
                     v.push(name.clone());
@@ -204,14 +207,14 @@ pub fn apply(ctx: &egui::Context, t: &Tokens) {
     v.window_shadow = egui::Shadow { offset: [0, 10], blur: 28, spread: 0, color: t.shadow };
     ctx.set_visuals(v);
     ctx.global_style_mut(|s| {
-        s.spacing.item_spacing = egui::vec2(6.0, 5.0);
-        s.spacing.button_padding = egui::vec2(8.0, 3.0);
-        s.spacing.interact_size.y = 22.0;
-        s.text_styles.insert(egui::TextStyle::Body, regular(12.5));
+        s.spacing.item_spacing = egui::vec2(8.0, 7.0);
+        s.spacing.button_padding = egui::vec2(10.0, 5.0);
+        s.spacing.interact_size.y = 28.0;
+        s.text_styles.insert(egui::TextStyle::Body, regular(14.0));
         s.text_styles.insert(egui::TextStyle::Button, regular(12.5));
-        s.text_styles.insert(egui::TextStyle::Small, regular(10.5));
-        s.text_styles.insert(egui::TextStyle::Heading, semibold(17.0));
-        s.text_styles.insert(egui::TextStyle::Monospace, FontId::monospace(12.0));
+        s.text_styles.insert(egui::TextStyle::Small, regular(12.0));
+        s.text_styles.insert(egui::TextStyle::Heading, semibold(19.0));
+        s.text_styles.insert(egui::TextStyle::Monospace, FontId::monospace(13.0));
     });
 }
 
