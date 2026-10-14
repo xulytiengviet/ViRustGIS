@@ -34,6 +34,42 @@
     #openrouter-status[data-error="false"] { color: #19683c; }
     #openrouter-remember-wrap { display: flex; gap: 8px; align-items: flex-start; margin-top: 14px; font-size: 13px; }
     @media(max-width:500px) { #openrouter-panel {padding:18px;} #openrouter-settings-button {top:8px;right:8px;} }
+  
+    /* Refined lightweight UI; map remains the primary workspace. */
+    :root { color-scheme: light; --ui-ink:#172b46; --ui-brand:#175cd3; --ui-line:#d9e3ef; --ui-muted:#576a83; }
+    #openrouter-settings-button {
+      top: 14px; right: 18px; padding: 11px 16px; border-radius: 12px;
+      border: 1px solid #d2dff0; background: #ffffffee; color: var(--ui-ink);
+      font: 650 14px/1.2 system-ui, "Segoe UI", sans-serif;
+      box-shadow: 0 6px 24px #1e3a5f22; backdrop-filter: blur(10px);
+      transition: box-shadow .18s ease, transform .18s ease, border-color .18s ease;
+    }
+    #openrouter-settings-button:hover { border-color:#9cbef8; box-shadow:0 10px 28px #1e3a5f30; transform:translateY(-1px); }
+    #openrouter-panel {
+      width:min(100%,520px); border:1px solid #e0e8f3; border-radius:20px;
+      padding:28px; color:var(--ui-ink); font:14px/1.6 system-ui,"Segoe UI",sans-serif;
+      box-shadow:0 24px 80px #091b3670;
+    }
+    #openrouter-panel h2 { font-size:23px; font-weight:750; letter-spacing:-.6px; }
+    #openrouter-panel .hint { color:var(--ui-muted); font-size:13px; }
+    #openrouter-panel label.field { font-size:13px; margin-top:18px; }
+    #openrouter-panel input[type="text"], #openrouter-panel input[type="password"] {
+      min-height:43px; border-radius:10px; border-color:var(--ui-line); background:#fbfdff; font-size:14px;
+      transition:border-color .15s ease, box-shadow .15s ease;
+    }
+    #openrouter-panel input[type="text"]:focus, #openrouter-panel input[type="password"]:focus {
+      border-color:#4b8af2; box-shadow:0 0 0 3px #b6d2ff66; outline:0;
+    }
+    #openrouter-panel a { color:#185cc2; font-weight:600; text-underline-offset:2px; }
+    #openrouter-panel .actions { gap:10px; }
+    #openrouter-panel button.action { min-height:39px; padding:10px 15px; border-radius:10px; font-size:13px; }
+    #openrouter-panel button.primary { background:#175cd3; border-color:#175cd3; }
+    #openrouter-panel button.primary:hover { background:#124bb0; }
+    @media(max-width:520px) {
+      #openrouter-panel { padding:20px; border-radius:16px; }
+      #openrouter-settings-button { top:8px;right:8px;padding:10px 12px; }
+    }
+    @media(prefers-reduced-motion:reduce) { #openrouter-settings-button { transition:none; } }
   </style>
 </head>
 <body>
