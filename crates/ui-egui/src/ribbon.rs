@@ -256,6 +256,9 @@ fn tab_strip(app: &mut RustGisApp, ui: &mut Ui, t: &Tokens) {
                                 app.ui.ribbon_peek = !(app.ui.ribbon_peek && app.ui.tab == tab);
                             }
                             app.ui.tab = tab.to_string();
+                            if tab == "Assistant" && app.ui.right != Some(RightPane::Assistant) {
+                                let _ = app.run("ui.pane.assistant", Value::Null);
+                            }
                         }
                         // A tab that became active (clicked, or opened by a command) scrolls
                         // into view, clear of the arrow buttons.
