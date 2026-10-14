@@ -238,7 +238,21 @@ fn services(inbox: Inbox, font_inbox: Inbox, ctx: egui::Context) -> Services {
     let fetch_ctx = ctx.clone();
     let http_ctx = ctx.clone();
     Services {
-        load_pref: Some(Box::new(|key: &str| storage().and_then(|s| s.get_item(&format!("rustgis.{key}")).ok().flatten()))),
+        load_pref: Some(Box::new(|key: &str| {
+            // API keys entered in the browser popup stay in sessionStorage unless
+            // the user explicitly opts in to persistent localStorage.
+            let name = format!("rustgis.{key}");
+            if key.starts_with("assistant_key_") {
+                if let Some(value) = web_sys::window()
+                    .and_then(|w| w.session_storage().ok().flatten())
+                    .and_then(|s| s.get_item(&name).ok().flatten())
+                    .filter(|s| !s.is_empty())
+                {
+                    return Some(value);
+                }
+            }
+            storage().and_then(|s| s.get_item(&name).ok().flatten())
+        })),
         save_pref: Some(Box::new(|key: &str, value: &str| {
             if let Some(s) = storage() {
                 let _ = s.set_item(&format!("rustgis.{key}"), value);
