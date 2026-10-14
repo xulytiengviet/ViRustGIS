@@ -12,7 +12,7 @@ use crate::theme::{Tokens, regular, semibold};
 use crate::widgets::{CONTENT_H, LABEL_H, big, big_menu, col, group, menu_item, small, small_menu, text_w};
 use crate::{RightPane, RustGisApp, icons};
 
-pub const TABS: [&str; 10] = ["Home", "Data", "Style", "Edit", "Analyze", "View", "Publish", "Plugins", "Settings", "Help"];
+pub const TABS: [&str; 11] = ["Home", "Data", "Style", "Edit", "Analyze", "View", "Publish", "Plugins", "Settings", "Assistant", "Help"];
 
 /// The tab that holds what an older tab name (in saved pane sets, tasks and scripts) held; Home for
 /// a name that is no tab. Plugins' tabs pass through.
@@ -103,6 +103,7 @@ pub fn show(app: &mut RustGisApp, ui: &mut Ui) {
                             "Plugins" => plugins_tab(app, ui),
                             "Settings" => settings_tab(app, ui),
                             "Help" => help_tab(app, ui),
+                            "Assistant" => assistant_tab(app, ui),
                             _ => home_tab(app, ui),
                         }
                     });
@@ -2679,6 +2680,19 @@ fn help_tab(app: &mut RustGisApp, ui: &mut Ui) {
         big(ui, app, "help", "About", "About RustGIS.", "ui.about", Value::Null, false, false);
         big(ui, app, "command", "Command\nSearch", "Find any command by name (Ctrl+K).", "ui.commandSearch", Value::Null, false, false);
         big(ui, app, "settings", "Shortcuts", "Keyboard shortcuts.", "ui.shortcuts", Value::Null, false, false);
+    });
+}
+
+// Dedicated assistant tab beside Help. Open the native egui assistant pane and
+// its built-in OpenRouter provider settings, not a separate HTML modal.
+fn assistant_tab(app: &mut RustGisApp, ui: &mut Ui) {
+    group(ui, "Trợ lý AI", |ui| {
+        big(
+            ui, app, "assistant", "Mở trợ lý\\nAI",
+            "Trò chuyện, phân tích dữ liệu và cấu hình OpenRouter trong bảng Trợ lý AI.",
+            "ui.pane.assistant", Value::Null,
+            app.ui.right == Some(RightPane::Assistant), false,
+        );
     });
 }
 
