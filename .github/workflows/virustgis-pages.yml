@@ -1,4 +1,4 @@
-name: Xuất bản viRustGIS Web
+name: Xuất bản ViRustGIS Web
 
 on:
   push:
@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   build:
-    if: github.repository == 'xulytiengviet/viRustGIS'
+    if: github.repository == 'xulytiengviet/ViRustGIS'
     runs-on: ubuntu-latest
     timeout-minutes: 40
     environment:
@@ -41,7 +41,7 @@ jobs:
           echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
       - name: Biên dịch ứng dụng web gốc bằng tiếng Việt
         working-directory: apps/rustgis-web
-        run: trunk build --release --public-url /viRustGIS/
+        run: trunk build --release --public-url /ViRustGIS/
       - name: Kiểm tra đầu ra
         run: |
           test -f dist/web/index.html
